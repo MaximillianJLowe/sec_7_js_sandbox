@@ -1,51 +1,69 @@
-document.getElementById('button').addEventListener('click', loadData);
+// Keys and values should be wrapped in " " in customer.json for valid JSON syntax unless it's a number  SEE JSONLINT.com for syntactical validation
 
-function loadData() {
-  // Create an XHR Object
+document.getElementById('button1').addEventListener
+('click', loadCustomer);
+
+document.getElementById('button2').addEventListener
+('click', loadCustomers);
+
+
+// Load Single Customer
+function loadCustomer(e) {
   const xhr = new XMLHttpRequest();
 
-  // OPEN
-  xhr.open('GET', 'data.txt', true);
+  xhr.open('GET', 'customer.json', true);
 
-  
-    //console.log('READYSTATE', xhr.readyState);
-
-  // Used to have to do this: 
-  // xhr.onreadystatechange = function() {
-    // console.log('READYSTATE', xhr.readyState);
-    //if(this.status === 200 && this.readyState === 4){
-        //console.log(this.responseText);
-    //}
-  
-
-  // Optional Used for Spinners/loaders during readystate 3 to show graphic while loading
-//xhr.onprogress = function(){
-  //console.log('READYSTATE', xhr.readyState);
-//}
-
-  // Now we can just do this:
   xhr.onload = function(){
     if(this.status === 200) {
       //console.log(this.responseText);
-      document.getElementById('output').innerHTML = `<h1>${this.responseText}</h1>`;
-    }
-  }
+    
+      const customer = JSON.parse(this.responseText);
 
-  xhr.onerror = function() {
-    console.log('Resuest Error...');
+      const output = `
+      <ul>
+        <li>ID: ${customer.id}</li>
+        <li>Name: ${customer.name}</li>
+        <li>Company: ${customer.company}</li>
+        <li>Phone: ${customer.phone}</li>
+      </ul>
+      `;
+
+      document.getElementById('customer').innerHTML = output;
+    }
   }
 
   xhr.send();
 }
 
-// readyState Values
-// 0: request not initialized
-// 1: server connection established
-// 2: request received
-// 3: processing request
-// 4: request finished and response is ready
+// Load Customers
+function loadCustomers(e) {
+  const xhr = new XMLHttpRequest();
 
-  // HTTP Statuses
-  // 200: "OK"
-  // 403: "Forbidden"
-  // 404: "Not Found"
+  xhr.open('GET', 'customers.json', true);
+
+  xhr.onload = function(){
+    if(this.status === 200) {
+      //console.log(this.responseText);
+    
+      const customers = JSON.parse(this.responseText);
+
+      let output = '';
+
+      customers.forEach(function(customer){
+        output += `
+        
+      <ul>
+        <li>ID: ${customer.id}</li>
+        <li>Name: ${customer.name}</li>
+        <li>Company: ${customer.company}</li>
+        <li>Phone: ${customer.phone}</li>
+      </ul>
+      `;
+      });
+      document.getElementById('customers').innerHTML = output;
+      
+    }
+  }
+
+  xhr.send();
+}
