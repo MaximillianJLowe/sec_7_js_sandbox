@@ -1,44 +1,33 @@
-// const sayHello = function() {
-//   console.log('Hello');
+// async function myFunc() {
+//   const promise = new Promise((resolve, reject) => {
+//     setTimeout(() => resolve('Hello'), 1000);
+//   });
+
+//   const error = false;
+
+//   if(!error){
+//     const res = await promise;  // Wait until promise is resolved
+//     return res;
+//   } else {
+//     await Promise.reject(new Error('Something went wrong'));
+//   }
 // }
 
-// const sayHello = () => {
-//   console.log('Hello');
-// }
+// myFunc()
+//   .then(res => console.log(res))
+//   .catch(err => console.log(err));
 
-// One line function does not need braces
-// const sayHello = () => console.log('Hello');
 
-// const sayHello = () => 'Hello';  is much better than the older way below
+// Cleaner and more current way to do above
+async function getUsers() {
+  //await response of the fetch call
+  const response = await fetch('https://jsonplaceholder.typicode.com/users');
 
-// Same as above 
-// const sayHello = function() {
-  //return 'Hello';
-//}
- 
-// Return object
-// const sayHello = () => ({ msg: 'Hello' }); // object literal will need to be wrapped in parentheses () as shown
+  // Only proceed once promise is resolved
+  const data = await response.json();
 
-// Single parameter does not need parentheses
-// const sayHello = name => console.log(`Hello ${name}`);
+  // Only proceed once second promise is resolved
+  return data;
+}
 
-// Two parameters requires parentheses
-// const sayHello = (firstName, lastName) => console.log(`Hello ${firstName} ${lastName}`);
-
-// sayHello('Max', 'Lowe');
-
-const users = ['Nathan', 'John', 'William'];
-
-//const nameLengths = users.map(function(name) {
-  //return name.length;
-//});
-
-// Shorter with => 
-// const nameLengths = users.map((name) => {
-//   return name.length;
-// });
-
-// Shortest
-const nameLengths = users.map(name => name.length);
-
-console.log(nameLengths);
+getUsers().then(users => console.log(users));
